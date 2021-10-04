@@ -1,15 +1,35 @@
 import unittest
+from unittest import TestCase
 
 import lecture_sample
+import solver_coordinator
 
 
 class MyTestCase(unittest.TestCase):
-    def test_given_sample_proves_correct(self):
-        solver = lecture_sample.main()
-
-        self.assertEqual(2.9999999999999996, solver.Objective().Value())
-        self.assertEqual(1.9999999999999998, solver.LookupVariable('x1').solution_value())
+    def test_main(self):
         expected_precision_decimal_places = 6
+        minimizer = [1, 1, 1, 1]
+        constraint_coefficients = [
+            [1, 2, -1, -1],
+            [-1, -5, 2, 3]
+        ]
+        constraint_resolutions = [
+            1,
+            1
+        ]
+
+        solver = solver_coordinator.main(
+            minimizer,
+            constraint_coefficients,
+            constraint_resolutions
+        )
+
+        self.assertAlmostEqual(
+            3.0,
+            solver.Objective().Value(),
+            expected_precision_decimal_places,
+            'optimal value not equal'
+        )
 
         self.assertAlmostEqual(
             2.0,

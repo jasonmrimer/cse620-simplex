@@ -14,7 +14,7 @@ class TestConstraintGenerator(TestCase):
     def test_generate_random_variables(self):
         # test the generator for a given number of variables
         constraint_generator = ConstraintGenerator(self.seed)
-        variables = constraint_generator.generate_random_variables(4, 1)
+        variables = constraint_generator.generate_random_coefficients(4, 1)
         self.assertEqual(4, len(variables))
         self.assertEqual(-6, variables[0])
         self.assertEqual(4, variables[1])
