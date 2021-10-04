@@ -15,7 +15,7 @@ def main(
 
     constraint_list = []
     for i in range(len(constraint_resolutions)):
-        constraint_list.append(solver.Constraint(0, constraint_resolutions[i]))
+        constraint_list.append(solver.Constraint(constraint_resolutions[i], constraint_resolutions[i]))
         for j in range(len(variables)):
             constraint_list[i].SetCoefficient(
                 variables[j],
@@ -32,14 +32,14 @@ def main(
     if status != pywraplp.Solver.OPTIMAL:
         print('The problem does not have an optimal solution.')
     else:
-        print('Solution:')
-        print('Objective value =', solver.Objective().Value())
-        for x in variables:
-            print(f'{x.name()} = {x.solution_value()}')
-    # print('x1 =', variables[0].solution_value())
-    # print('x2 =', variables[1].solution_value())
-    # print('x3 =', variables[2].solution_value())
-    # print('x4 =', variables[3].solution_value())
+        # print('Solution:')
+        # print('Objective value =', solver.Objective().Value())
+        # for x in variables:
+        #     print(f'{x.name()} = {x.solution_value()}')
+        # print('x1 =', variables[0].solution_value())
+        # print('x2 =', variables[1].solution_value())
+        # print('x3 =', variables[2].solution_value())
+        # print('x4 =', variables[3].solution_value())
         return solver
 
 
