@@ -3,6 +3,7 @@ from unittest import TestCase
 
 import lecture_sample
 import solver_coordinator
+from constraint_generator import ConstraintGenerator
 
 
 class MyTestCase(unittest.TestCase):
@@ -59,11 +60,12 @@ class MyTestCase(unittest.TestCase):
 
     def test_main_random(self):
         expected_precision_decimal_places = 6
-        minimizer = [1, 1, 1, 1]
-        constraint_coefficients = [
-            [1, 2, -1, -1],
-            [-1, -5, 2, 3]
-        ]
+        constraint_generator = ConstraintGenerator(20)
+
+        minimizer = constraint_generator.generate_minimizer(4)
+
+        constraint_coefficients = constraint_generator.generate_random_constraints(2,4)
+
         constraint_resolutions = [
             1,
             1

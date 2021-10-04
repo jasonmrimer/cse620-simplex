@@ -47,3 +47,12 @@ class TestConstraintGenerator(TestCase):
         self.assertEqual(5, minimizer[1])
         self.assertEqual(-1, minimizer[2])
         self.assertEqual(-10, minimizer[3])
+
+    def test_generate_constraint_resolutions(self):
+        constraint_generator = ConstraintGenerator(self.seed)
+        resolutions = constraint_generator.generate_constraint_resolutions(4)
+        self.assertEqual(4, len(resolutions))
+        self.assertEqual(1, resolutions[0])
+        self.assertEqual(-9, resolutions[1])
+        self.assertEqual(-1, resolutions[2])
+        self.assertEqual(-4, resolutions[3])

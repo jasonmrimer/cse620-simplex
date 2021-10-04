@@ -1,3 +1,4 @@
+import math
 import random
 
 
@@ -24,3 +25,5 @@ class ConstraintGenerator(object):
     def generate_minimizer(self, variable_count):
         return self.generate_random_coefficients(variable_count, self.seed)
 
+    def generate_constraint_resolutions(self, constraint_count):
+        return self.generate_random_coefficients(constraint_count, math.sqrt(self.seed))
