@@ -4,16 +4,37 @@ from constraint_generator import ConstraintGenerator
 
 
 class TestConstraintGenerator(TestCase):
-    def test_random_number_generator(self):
-        constraint_generator = ConstraintGenerator(20)
+    seed = 20
+
+    def test_random_in_range(self):
+        # test the consistency of using a seed for randomizer
+        constraint_generator = ConstraintGenerator(self.seed)
         self.assertEqual(-6, constraint_generator.random_in_range(1))
 
-    def test_number_of_variables_generated_as_given(self):
-        constraint_generator = ConstraintGenerator(20)
-        constraints = constraint_generator.generate_random_constraints(4)
-        self.assertEqual(4, len(constraints))
-        self.assertEqual(2, constraints[0])
-        self.assertEqual(-6, constraints[1])
-        self.assertEqual(4, constraints[2])
-        self.assertEqual(-1 , constraints[3])
+    def test_generate_random_variables(self):
+        # test the generator for a given number of variables
+        constraint_generator = ConstraintGenerator(self.seed)
+        variables = constraint_generator.generate_random_variables(4, 1)
+        self.assertEqual(4, len(variables))
+        self.assertEqual(-6, variables[0])
+        self.assertEqual(4, variables[1])
+        self.assertEqual(-1, variables[2])
+        self.assertEqual(-2, variables[3])
 
+    def test_generate_random_constraints(self):
+        # test generation of several constraint equations
+        constraint_generator = ConstraintGenerator(self.seed)
+        constraints = constraint_generator.generate_random_constraints(2, 4)
+        self.assertEqual(2, len(constraints))
+
+        self.assertEqual(4, len(constraints[0]))
+        self.assertEqual(-6, constraints[0][0])
+        self.assertEqual(4, constraints[0][1])
+        self.assertEqual(-1, constraints[0][2])
+        self.assertEqual(-2, constraints[0][3])
+
+        self.assertEqual(4, len(constraints[1]))
+        self.assertEqual(4, constraints[1][0])
+        self.assertEqual(-2, constraints[1][1])
+        self.assertEqual(6, constraints[1][2])
+        self.assertEqual(-7, constraints[1][3])
