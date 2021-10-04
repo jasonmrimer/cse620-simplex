@@ -6,6 +6,7 @@ import solver_coordinator
 
 
 class MyTestCase(unittest.TestCase):
+    # test with lecture example
     def test_main(self):
         expected_precision_decimal_places = 6
         minimizer = [1, 1, 1, 1]
@@ -55,6 +56,18 @@ class MyTestCase(unittest.TestCase):
             expected_precision_decimal_places,
             'x4 value not within expected range'
         )
+
+    def test_main_random(self):
+        expected_precision_decimal_places = 6
+        minimizer = [1, 1, 1, 1]
+        constraint_coefficients = [
+            [1, 2, -1, -1],
+            [-1, -5, 2, 3]
+        ]
+        constraint_resolutions = [
+            1,
+            1
+        ]
 
 
 if __name__ == '__main__':

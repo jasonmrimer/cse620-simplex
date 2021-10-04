@@ -38,3 +38,12 @@ class TestConstraintGenerator(TestCase):
         self.assertEqual(-2, constraints[1][1])
         self.assertEqual(6, constraints[1][2])
         self.assertEqual(-7, constraints[1][3])
+
+    def test_generate_minimizer(self):
+        constraint_generator = ConstraintGenerator(self.seed)
+        minimizer = constraint_generator.generate_minimizer(4)
+        self.assertEqual(4, len(minimizer))
+        self.assertEqual(-1, minimizer[0])
+        self.assertEqual(5, minimizer[1])
+        self.assertEqual(-1, minimizer[2])
+        self.assertEqual(-10, minimizer[3])

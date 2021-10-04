@@ -8,7 +8,6 @@ def main(
 ):
     solver = pywraplp.Solver.CreateSolver('GLOP')
 
-    # create variables for solver with x# names
     variables = []
     for i in range(len(constraint_coefficients[0])):
         variables.append(solver.NumVar(0, solver.infinity(), f'x{i + 1}'))
@@ -32,14 +31,6 @@ def main(
     if status != pywraplp.Solver.OPTIMAL:
         print('The problem does not have an optimal solution.')
     else:
-        # print('Solution:')
-        # print('Objective value =', solver.Objective().Value())
-        # for x in variables:
-        #     print(f'{x.name()} = {x.solution_value()}')
-        # print('x1 =', variables[0].solution_value())
-        # print('x2 =', variables[1].solution_value())
-        # print('x3 =', variables[2].solution_value())
-        # print('x4 =', variables[3].solution_value())
         return solver
 
 

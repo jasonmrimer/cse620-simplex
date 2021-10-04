@@ -20,3 +20,7 @@ class ConstraintGenerator(object):
         for x in range(constraint_count):
             constraints.append(self.generate_random_coefficients(variable_count, x + 1))
         return constraints
+
+    def generate_minimizer(self, variable_count):
+        return self.generate_random_coefficients(variable_count, self.seed)
+
