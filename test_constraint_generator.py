@@ -46,10 +46,10 @@ class TestConstraintGenerator(TestCase):
         for minimum in minimizer:
             self.assertGreaterEqual(minimum, 0)
 
-        self.assertEqual(78, minimizer[0])
-        self.assertEqual(50, minimizer[1])
-        self.assertEqual(95, minimizer[2])
-        self.assertEqual(49, minimizer[3])
+        self.assertEqual(9, minimizer[0])
+        self.assertEqual(6, minimizer[1])
+        self.assertEqual(2, minimizer[2])
+        self.assertEqual(6, minimizer[3])
 
         constraints = constraint_generator.generate_random_constraints(2, 4)
         for i in range(len(minimizer)):

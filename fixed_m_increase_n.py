@@ -53,7 +53,7 @@ class MyTestCase(unittest.TestCase):
 
         solver = run_solution(constraint_generator, solver, variable_count, constraint_count)
 
-        self.assertTrue(solver.Objective().Value())
+        self.assertIsNotNone(solver.Objective().Value())
         print(f'optimal solution: {solver.Objective().Value()}')
 
 
@@ -66,7 +66,7 @@ class MyTestCase(unittest.TestCase):
         solver = None
         solver = run_solution(constraint_generator, solver, variable_count, constraint_count)
 
-        self.assertTrue(solver.Objective().Value())
+        self.assertIsNotNone(solver.Objective().Value())
         print(f'optimal solution: {solver.Objective().Value()}')
 
     def test_n_30(self):
@@ -78,7 +78,7 @@ class MyTestCase(unittest.TestCase):
         solver = None
         solver = run_solution(constraint_generator, solver, variable_count, constraint_count)
 
-        self.assertTrue(solver.Objective().Value())
+        self.assertIsNotNone(solver.Objective().Value())
         print(f'optimal solution: {solver.Objective().Value()}')
 
     def test_n_40(self):
@@ -90,7 +90,7 @@ class MyTestCase(unittest.TestCase):
         solver = None
         solver = run_solution(constraint_generator, solver, variable_count, constraint_count)
 
-        self.assertTrue(solver.Objective().Value())
+        self.assertIsNotNone(solver.Objective().Value())
         print(f'optimal solution: {solver.Objective().Value()}')
 
     def test_n_50(self):
@@ -102,7 +102,7 @@ class MyTestCase(unittest.TestCase):
         solver = None
         solver = run_solution(constraint_generator, solver, variable_count, constraint_count)
 
-        self.assertTrue(solver.Objective().Value())
+        self.assertIsNotNone(solver.Objective().Value())
         print(f'optimal solution: {solver.Objective().Value()}')
 
 

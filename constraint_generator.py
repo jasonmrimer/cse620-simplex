@@ -26,7 +26,7 @@ class ConstraintGenerator(object):
         minimizer = []
         multiplier = (constraint_count + 1) * variable_count
         for x in range(variable_count):
-            minimizer.append(self.random_in_range((x + 1) * multiplier, 0, 100))
+            minimizer.append(self.random_in_range((x + 1) * multiplier, 0, 10))
         return minimizer
 
     def generate_constraint_resolutions(self, constraint_count):
