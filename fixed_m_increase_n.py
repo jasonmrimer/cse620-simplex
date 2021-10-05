@@ -10,7 +10,7 @@ def print_solution(n, solver):
 
 class MyTestCase(unittest.TestCase):
     seed = 1
-    constraint_count = 2
+    constraint_count = 6
 
     def test_n_increasing(self):
         for n in range(10, 60, 10):

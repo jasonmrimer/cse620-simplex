@@ -59,7 +59,7 @@ def main(
 
     if no_solution(status):
         print('The problem does not have an optimal solution.')
-        return None
+        return solver
 
     if print_results:
         print_constraints(
