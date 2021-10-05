@@ -20,11 +20,8 @@ class MyTestCase(unittest.TestCase):
             1
         ]
 
-        solver = solver_coordinator.main(
-            minimizer,
-            constraint_coefficients,
-            constraint_resolutions
-        )
+        solver = solver_coordinator.main(minimizer, constraint_coefficients,
+                                         constraint_resolutions)
 
         self.assertAlmostEqual(
             3.0,
@@ -66,11 +63,8 @@ class MyTestCase(unittest.TestCase):
         constraint_coefficients = constraint_generator.generate_random_constraints(2, 4)
         constraint_resolutions = constraint_generator.generate_constraint_resolutions(2)
 
-        solver = solver_coordinator.main(
-            minimizer,
-            constraint_coefficients,
-            constraint_resolutions
-        )
+        solver = solver_coordinator.main(minimizer, constraint_coefficients,
+                                         constraint_resolutions)
 
         self.assertAlmostEqual(
             -5.2857,
