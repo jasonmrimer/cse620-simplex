@@ -15,11 +15,13 @@ def main(
     constraint_list = []
     for i in range(len(constraint_resolutions)):
         constraint_list.append(solver.Constraint(constraint_resolutions[i], constraint_resolutions[i]))
+        print(f'constraint res: {constraint_resolutions[i]}')
         for j in range(len(variables)):
             constraint_list[i].SetCoefficient(
                 variables[j],
                 constraint_coefficients[i][j]
             )
+            print(f'coefficient: {variables[j].name()}: {constraint_coefficients[i][j]}')
 
     objective = solver.Objective()
     for i in range(len(variables)):
@@ -31,6 +33,10 @@ def main(
     if status != pywraplp.Solver.OPTIMAL:
         print('The problem does not have an optimal solution.')
     else:
+        for variable in variables:
+            print(f'minimizer: {variable.name()}: {objective.GetCoefficient(variable)}')
+        for variable in variables:
+            print(f'solution: {variable.name()}: {variable.solution_value()}')
         return solver
 
 

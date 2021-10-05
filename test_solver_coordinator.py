@@ -62,7 +62,7 @@ class MyTestCase(unittest.TestCase):
         expected_precision_decimal_places = 3
         constraint_generator = ConstraintGenerator(26)
 
-        minimizer = constraint_generator.generate_minimizer(4)
+        minimizer = constraint_generator.generate_minimizer(2, 4)
         constraint_coefficients = constraint_generator.generate_random_constraints(2, 4)
         constraint_resolutions = constraint_generator.generate_constraint_resolutions(2)
 
