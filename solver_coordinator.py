@@ -1,6 +1,10 @@
+import datetime
+import time
+
 from ortools.linear_solver import pywraplp
 
 from constraint_generator import ConstraintGenerator
+from solution import Solution
 
 
 def main_refactored(
@@ -55,7 +59,9 @@ def main(
 
     objective = setup_minimizer(solver, minimizer, variables)
 
+    start = datetime.datetime.now()
     status = solver.Solve()
+    end = datetime.datetime.now()
 
     if no_solution(status):
         print('The problem does not have an optimal solution.')
@@ -70,7 +76,7 @@ def main(
         print_minimizer(variables, objective)
         print_solution(variables)
 
-    return solver
+    return Solution(solver, (end - start))
 
 
 def setup_minimizer(solver, minimizer, variables):
@@ -81,8 +87,12 @@ def setup_minimizer(solver, minimizer, variables):
     return objective
 
 
-def set_constraint_equations(solver, constraint_resolutions,
-                             constraint_coefficients, variables):
+def set_constraint_equations(
+        solver,
+        constraint_resolutions,
+        constraint_coefficients,
+        variables
+):
     constraint_list = []
     for i in range(len(constraint_resolutions)):
         constraint_list.append(
