@@ -40,10 +40,6 @@ def no_solution(status):
     return status != pywraplp.Solver.OPTIMAL
 
 
-def print_minimizer_equation(variables, minimizer):
-    pass
-
-
 def main(
         minimizer,
         constraint_coefficients,
@@ -73,15 +69,16 @@ def main(
         return None
 
     if print_results:
-        print_equation(variables, constraint_coefficients)
+        print_constraint_equation(variables, constraint_coefficients)
         # print_constraints(
         #     constraint_resolutions,
         #     constraint_coefficients,
         #     variables
         # )
-        print_minimizer_equation(variables, minimizer)
-        print_minimizer(variables, objective)
-        print_solution(variables)
+        print_minimizer_equation(minimizer, variables)
+        # print_minimizer(variables, objective)
+        print_pretty_solution(variables)
+        # print_solution(variables)
 
     return Solution(solver, (end - start))
 
@@ -149,23 +146,44 @@ def print_solution(variables):
         print(f'solution: {variable.name()}: {variable.solution_value()}')
 
 
+def print_pretty_solution(variables):
+    pretty_solution = solution_prettier(variables[0])
+    for i in range(1, len(variables)):
+        pretty_solution += f', {solution_prettier(variables[i])}'
+    print(pretty_solution)
+
+def solution_prettier(variable):
+    subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+    solution = f'{variable.name().translate(subscripter)} = {variable.solution_value()}'
+    return solution
+
+
 def determine_sign(number):
     return '+' if number > 0 else '—'
 
 
-def print_equation(variables, coefficients):
-    print('eequation')
-    SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+def print_constraint_equation(variables, coefficients):
+    for i in range(len(coefficients)):
+        print(f'constraint {i + 1}')
+        print_equation(coefficients[i], variables)
+
+
+def print_minimizer_equation(coefficients, variables):
+    print('minimizer')
+    print_equation(coefficients, variables)
+
+
+def print_equation(coefficients, variables):
+    subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
     pretty_variables = []
     for variable in variables:
-        pretty_variables.append(variable.name().translate(SUB))
+        pretty_variables.append(variable.name().translate(subscripter))
 
-    for i in range(len(coefficients)):
-        equation = f'{coefficients[i][0]}{pretty_variables[0]}'
-        for j in range(1, len(variables)):
-            sign = determine_sign(coefficients[i][j])
-            equation += f' {sign} {abs(coefficients[i][j])}{pretty_variables[j]}'
-        print(equation)
+    equation = f'{coefficients[0]}{pretty_variables[0]}'
+    for j in range(1, len(variables)):
+        sign = determine_sign(coefficients[j])
+        equation += f' {sign} {abs(coefficients[j])}{pretty_variables[j]}'
+    print(equation)
 
 
 if __name__ == '__main__':
