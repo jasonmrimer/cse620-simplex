@@ -61,7 +61,6 @@ def print_solution(m, n, solver):
     print(
         f'optimal solution for m = {m} | n = {n}: '
         f'{solver.Objective().Value()}\n')
-    print(u'H\u2082O\u2082')
 
 
 if __name__ == '__main__':

@@ -69,7 +69,7 @@ def main(
         return None
 
     if print_results:
-        print_constraint_equation(variables, constraint_coefficients)
+        print_constraint_equation(variables, constraint_coefficients, constraint_resolutions)
         # print_constraints(
         #     constraint_resolutions,
         #     constraint_coefficients,
@@ -150,30 +150,33 @@ def print_pretty_solution(variables):
     pretty_solution = solution_prettier(variables[0])
     for i in range(1, len(variables)):
         pretty_solution += f', {solution_prettier(variables[i])}'
-    print(pretty_solution)
+    print(f'solution:\n{pretty_solution}')
+
 
 def solution_prettier(variable):
     subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
-    solution = f'{variable.name().translate(subscripter)} = {variable.solution_value()}'
+    solution = f'{variable.name().translate(subscripter)}={variable.solution_value()}'
     return solution
 
 
 def determine_sign(number):
-    return '+' if number > 0 else '—'
+    return '+' if number > 0 else '-'
 
 
-def print_constraint_equation(variables, coefficients):
+def print_constraint_equation(variables, coefficients, resolutions=None):
     for i in range(len(coefficients)):
         print(f'constraint {i + 1}')
-        print_equation(coefficients[i], variables)
+        equation = printable_equation(coefficients[i], variables)
+        equation += f'≤{resolutions[i]}'
+        print(equation)
 
 
 def print_minimizer_equation(coefficients, variables):
     print('minimizer')
-    print_equation(coefficients, variables)
+    print(printable_equation(coefficients, variables))
 
 
-def print_equation(coefficients, variables):
+def printable_equation(coefficients, variables):
     subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
     pretty_variables = []
     for variable in variables:
@@ -182,8 +185,8 @@ def print_equation(coefficients, variables):
     equation = f'{coefficients[0]}{pretty_variables[0]}'
     for j in range(1, len(variables)):
         sign = determine_sign(coefficients[j])
-        equation += f' {sign} {abs(coefficients[j])}{pretty_variables[j]}'
-    print(equation)
+        equation += f'{sign}{abs(coefficients[j])}{pretty_variables[j]}'
+    return equation
 
 
 if __name__ == '__main__':
