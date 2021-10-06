@@ -1,4 +1,5 @@
 import datetime
+import math
 import time
 
 from ortools.linear_solver import pywraplp
@@ -64,8 +65,9 @@ def main(
     end = datetime.datetime.now()
 
     if no_solution(status):
-        print('The problem does not have an optimal solution.')
-        return solver
+        if print_results:
+            print('The problem does not have an optimal solution.')
+        return None
 
     if print_results:
         print_constraints(
@@ -98,7 +100,7 @@ def set_constraint_equations(
         constraint_list.append(
             solver.Constraint(
                 constraint_resolutions[i],
-                constraint_resolutions[i]
+                solver.infinity()
             )
         )
         for j in range(len(variables)):
