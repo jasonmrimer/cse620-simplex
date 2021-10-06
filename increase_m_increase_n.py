@@ -20,7 +20,7 @@ def feasible_solver_seed_finder(
             seed,
             constraint_count,
             variable_count,
-            False
+            True
         )
         # print(f'objective: {solution}')
         if solution is not None:
@@ -36,28 +36,32 @@ class MyTestCase(unittest.TestCase):
 
     def test_m_increasing_n_increasing(self):
         for constraint_count in range(2, 15, 4):
+            self.run_solver_with_configs(constraint_count, 4)
             for variable_count in range(10, 51, 10):
-                seed = 1
-                solutionSeed = feasible_solver_seed_finder(
-                    seed,
-                    constraint_count,
-                    variable_count
-                )
-                print(f'm = {constraint_count} | n = {variable_count} | seed = {solutionSeed.seed}')
-                print(f'wall time: {solutionSeed.solution.wall_time}')
+                self.run_solver_with_configs(constraint_count, variable_count)
 
-                # self.assertIsNotNone(solver.Objective().Value())
-                print_solution(
-                    constraint_count,
-                    variable_count,
-                    solutionSeed.solution.solver
-                )
+    def run_solver_with_configs(self, constraint_count, variable_count):
+        print(f'm = {constraint_count} | n = {variable_count}')
+        seed = 1
+        solutionSeed = feasible_solver_seed_finder(
+            seed,
+            constraint_count,
+            variable_count
+        )
+        print(f'wall time: {solutionSeed.solution.wall_time}')
+        # self.assertIsNotNone(solver.Objective().Value())
+        print_solution(
+            constraint_count,
+            variable_count,
+            solutionSeed.solution.solver
+        )
 
 
 def print_solution(m, n, solver):
     print(
         f'optimal solution for m = {m} | n = {n}: '
         f'{solver.Objective().Value()}\n')
+    print(u'H\u2082O\u2082')
 
 
 if __name__ == '__main__':

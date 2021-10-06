@@ -1,6 +1,5 @@
 import datetime
-import math
-import time
+from time import time
 
 from ortools.linear_solver import pywraplp
 
@@ -41,6 +40,10 @@ def no_solution(status):
     return status != pywraplp.Solver.OPTIMAL
 
 
+def print_minimizer_equation(variables, minimizer):
+    pass
+
+
 def main(
         minimizer,
         constraint_coefficients,
@@ -60,9 +63,9 @@ def main(
 
     objective = setup_minimizer(solver, minimizer, variables)
 
-    start = datetime.datetime.now()
+    start = time()
     status = solver.Solve()
-    end = datetime.datetime.now()
+    end = time()
 
     if no_solution(status):
         if print_results:
@@ -70,11 +73,13 @@ def main(
         return None
 
     if print_results:
-        print_constraints(
-            constraint_resolutions,
-            constraint_coefficients,
-            variables
-        )
+        print_equation(variables, constraint_coefficients)
+        # print_constraints(
+        #     constraint_resolutions,
+        #     constraint_coefficients,
+        #     variables
+        # )
+        print_minimizer_equation(variables, minimizer)
         print_minimizer(variables, objective)
         print_solution(variables)
 
@@ -142,6 +147,25 @@ def print_minimizer(variables, objective):
 def print_solution(variables):
     for variable in variables:
         print(f'solution: {variable.name()}: {variable.solution_value()}')
+
+
+def determine_sign(number):
+    return '+' if number > 0 else '—'
+
+
+def print_equation(variables, coefficients):
+    print('eequation')
+    SUB = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
+    pretty_variables = []
+    for variable in variables:
+        pretty_variables.append(variable.name().translate(SUB))
+
+    for i in range(len(coefficients)):
+        equation = f'{coefficients[i][0]}{pretty_variables[0]}'
+        for j in range(1, len(variables)):
+            sign = determine_sign(coefficients[i][j])
+            equation += f' {sign} {abs(coefficients[i][j])}{pretty_variables[j]}'
+        print(equation)
 
 
 if __name__ == '__main__':
