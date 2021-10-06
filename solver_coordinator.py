@@ -11,7 +11,7 @@ def main_refactored(
         seed,
         constraint_count,
         variable_count,
-        print_results=False
+        should_print_results=False
 ):
     constraint_generator = ConstraintGenerator(seed)
 
@@ -30,7 +30,7 @@ def main_refactored(
         minimizer,
         constraint_coefficients,
         constraint_resolutions,
-        print_results
+        should_print_results
     )
 
     return solver
@@ -44,7 +44,7 @@ def main(
         minimizer,
         constraint_coefficients,
         constraint_resolutions,
-        print_results=False
+        should_print_results=False
 ):
     solver = pywraplp.Solver.CreateSolver('GLOP')
 
@@ -64,23 +64,34 @@ def main(
     end = time()
 
     if no_solution(status):
-        if print_results:
+        if should_print_results:
             print('The problem does not have an optimal solution.')
         return None
 
-    if print_results:
-        print_constraint_equation(variables, constraint_coefficients, constraint_resolutions)
-        # print_constraints(
-        #     constraint_resolutions,
-        #     constraint_coefficients,
-        #     variables
-        # )
-        print_minimizer_equation(minimizer, variables)
-        # print_minimizer(variables, objective)
-        print_pretty_solution(variables)
-        # print_solution(variables)
+    if should_print_results:
+        print_results(
+            constraint_coefficients,
+            constraint_resolutions,
+            minimizer,
+            variables
+        )
 
     return Solution(solver, (end - start))
+
+
+def print_results(constraint_coefficients, constraint_resolutions, minimizer,
+                  variables):
+    print_minimizer_equation(minimizer, variables)
+    print_constraint_equation(variables, constraint_coefficients,
+                              constraint_resolutions)
+    print_pretty_solution(variables)
+    # print_constraints(
+    #     constraint_resolutions,
+    #     constraint_coefficients,
+    #     variables
+    # )
+    # print_minimizer(variables, objective)
+    # print_solution(variables)
 
 
 def setup_minimizer(solver, minimizer, variables):
