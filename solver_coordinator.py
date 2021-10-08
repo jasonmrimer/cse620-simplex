@@ -1,10 +1,11 @@
-import datetime
 from time import time
 
 from ortools.linear_solver import pywraplp
 
 from constraint_generator import ConstraintGenerator
 from solution import Solution
+from solution_printer import print_constraint_equation, \
+    print_minimizer_equation, print_pretty_solution
 
 
 def main_refactored(
@@ -57,7 +58,7 @@ def main(
         variables
     )
 
-    objective = setup_minimizer(solver, minimizer, variables)
+    setup_minimizer(solver, minimizer, variables)
 
     start = time()
     status = solver.Solve()
@@ -68,30 +69,29 @@ def main(
             print('The problem does not have an optimal solution.')
         return None
 
-    if should_print_results:
-        print_results(
-            constraint_coefficients,
-            constraint_resolutions,
-            minimizer,
-            variables
-        )
+    print_results(
+        constraint_coefficients,
+        constraint_resolutions,
+        minimizer,
+        variables,
+        should_print_results
+    )
 
     return Solution(solver, (end - start))
 
 
-def print_results(constraint_coefficients, constraint_resolutions, minimizer,
-                  variables):
-    print_minimizer_equation(minimizer, variables)
-    print_constraint_equation(variables, constraint_coefficients,
-                              constraint_resolutions)
-    print_pretty_solution(variables)
-    # print_constraints(
-    #     constraint_resolutions,
-    #     constraint_coefficients,
-    #     variables
-    # )
-    # print_minimizer(variables, objective)
-    # print_solution(variables)
+def print_results(
+        constraint_coefficients, constraint_resolutions, minimizer, variables,
+        should_print
+):
+    if should_print:
+        print_minimizer_equation(minimizer, variables)
+        print_constraint_equation(
+            variables,
+            constraint_coefficients,
+            constraint_resolutions
+        )
+        print_pretty_solution(variables)
 
 
 def setup_minimizer(solver, minimizer, variables):
@@ -128,76 +128,6 @@ def set_variables(constraint_coefficients, solver):
     for i in range(len(constraint_coefficients[0])):
         variables.append(solver.NumVar(0, solver.infinity(), f'x{i + 1}'))
     return variables
-
-
-def print_constraints(
-        constraint_resolutions,
-        constraint_coefficients,
-        variables
-):
-    for i in range(len(constraint_resolutions)):
-        print(f'constraint {i + 1} res: {constraint_resolutions[i]}')
-        for j in range(len(variables)):
-            print(
-                f'coefficient: {variables[j].name()}: '
-                f'{constraint_coefficients[i][j]}'
-            )
-
-
-def print_minimizer(variables, objective):
-    for variable in variables:
-        print(
-            f'minimizer: {variable.name()}: '
-            f'{objective.GetCoefficient(variable)}'
-        )
-
-
-def print_solution(variables):
-    for variable in variables:
-        print(f'solution: {variable.name()}: {variable.solution_value()}')
-
-
-def print_pretty_solution(variables):
-    pretty_solution = solution_prettier(variables[0])
-    for i in range(1, len(variables)):
-        pretty_solution += f', {solution_prettier(variables[i])}'
-    print(f'solution:\n{pretty_solution}')
-
-
-def solution_prettier(variable):
-    subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
-    solution = f'{variable.name().translate(subscripter)}={variable.solution_value()}'
-    return solution
-
-
-def determine_sign(number):
-    return '+' if number > 0 else '-'
-
-
-def print_constraint_equation(variables, coefficients, resolutions=None):
-    for i in range(len(coefficients)):
-        print(f'constraint {i + 1}')
-        equation = printable_equation(coefficients[i], variables)
-        equation += f'≤{resolutions[i]}'
-        print(equation)
-
-
-def print_minimizer_equation(coefficients, variables):
-    print('minimizer')
-    print(printable_equation(coefficients, variables))
-
-
-def printable_equation(coefficients, variables):
-    subscripter = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
-    pretty_variables = []
-    for variable in variables:
-        pretty_variables.append(variable.name().translate(subscripter))
-
-    equation = f'{coefficients[0]}{pretty_variables[0]}'
-    for j in range(1, len(variables)):
-        sign = determine_sign(coefficients[j])
-        equation += f'{sign}{abs(coefficients[j])}{pretty_variables[j]}'
-    return equation
 
 
 if __name__ == '__main__':
